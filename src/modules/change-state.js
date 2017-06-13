@@ -178,12 +178,12 @@
 		}
 		
 		var followers = followerScope.find(followerSelector);
-		var notifyData = {item: item, state: state, flag: flag, continue: true};
+		var notifyData = {item: item, state: state, flag: flag, cancel: false};
 
 		App.mediator.notify('changeState.begin', notifyData);
 
 		//Execute change
-		if (notifyData.continue) {
+		if (!!!notifyData.cancel && !notifyData.cancel) {
 			doSetItemState(item, state, flag);
 
 			//Process followers
@@ -191,9 +191,9 @@
 				var it = $(this);
 				setItemState(it, state, flag);
 			});
-			
-			App.modules.notify('changeState.end', {item: item, state: state, flag: flag});
 		}
+
+		App.modules.notify('changeState.end', {item: item, state: state, flag: flag, canceled: notifyData.cancel});
 	};
 
 	var processItem = function (item, state, action, callbacks) {
