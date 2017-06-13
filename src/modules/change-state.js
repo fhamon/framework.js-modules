@@ -24,9 +24,9 @@
  *
  *  NOTIFY OUT :
  *      - changeState.begin
- *          {item,state,flag}
+ *          {item, state, flag, cancel}
  *      - changeState.end
- *          {item,state,flag}
+ *          {item, state, flag, canceled}
  *
  */
 (function ($, undefined) {
