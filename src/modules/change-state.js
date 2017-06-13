@@ -178,19 +178,22 @@
 		}
 		
 		var followers = followerScope.find(followerSelector);
+		var notifyData = {item: item, state: state, flag: flag, continue: true};
 
-		App.modules.notify('changeState.begin', {item: item, state: state, flag: flag});
+		App.mediator.notify('changeState.begin', notifyData);
 
 		//Execute change
-		doSetItemState(item, state, flag);
+		if (notifyData.continue) {
+			doSetItemState(item, state, flag);
 
-		//Process followers
-		followers.each(function () {
-			var it = $(this);
-			setItemState(it, state, flag);
-		});
-		
-		App.modules.notify('changeState.end', {item: item, state: state, flag: flag});
+			//Process followers
+			followers.each(function () {
+				var it = $(this);
+				setItemState(it, state, flag);
+			});
+			
+			App.modules.notify('changeState.end', {item: item, state: state, flag: flag});
+		}
 	};
 
 	var processItem = function (item, state, action, callbacks) {
