@@ -27,6 +27,7 @@
 				if (!!href && (/^https?:\/\//.test(href) || /^\/workspace/.test(href))) {
 					if (!t.attr('target')) {
 						t.attr('target', '_blank');
+						t.attr('rel', 'noopener');
 					}
 				}
 			});
