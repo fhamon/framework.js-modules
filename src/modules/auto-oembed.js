@@ -57,7 +57,7 @@
 
 		ctx.data(DATA_KEY, oembed);
 		components.push(oembed);
-		oembed.load(
+		oembed.load({
 			finish: function () {
 				App.modules.notify('changeState.update', {
 					item: ctx,
@@ -65,7 +65,7 @@
 					action: 'off'
 				});
 			}
-		);
+		});
 		return oembed;
 	};
 	
