@@ -28,6 +28,8 @@
 					if (!t.attr('target')) {
 						t.attr('target', '_blank');
 						t.attr('rel', 'noopener');
+					} else if (!t.attr('rel') && $.inArray(t.attr('target'), ['_blank', '_top'])) {
+						t.attr('rel', 'noopener');
 					}
 				}
 			});
