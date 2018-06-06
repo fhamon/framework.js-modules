@@ -2,11 +2,13 @@
  * Friendly maping of "all" the keyboard keys
  * @author Deux Huit Huit
  */
-(function ($, global, undefined) {
+(function ($) {
 
 	'use strict';
 
-	global.keys = {
+	App.device.keys = {};
+
+	App.device.keys.code = {
 		'?': 0,
 		backspace: 8,
 		tab: 9,
@@ -116,12 +118,12 @@
 		single_quote: 222
 	};
 
-	global.keyFromCode = function (code) {
+	App.device.keys.fromCode = function (code) {
 		var key = '?';
 		if (!code) {
 			return key;
 		}
-		$.each(window.keys, function (index, value) {
+		$.each(App.device.keys.code, function (index, value) {
 			if (code === value) {
 				key = index;
 				return false;
@@ -133,8 +135,9 @@
 	};
 
 	// Chars
-	global.isChar = function (c) {
-		return c === window.keys.space_bar || (c > window.keys['0'] && c <= window.keys.z);
+	App.device.keys.isChar = function (c) {
+		return c === App.device.keys.code.space_bar || 
+			(c > App.device.keys.code['0'] && c <= App.device.keys.code.z);
 	};
 
-})(jQuery, window);
+})(jQuery);
