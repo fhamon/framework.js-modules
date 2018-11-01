@@ -97,7 +97,8 @@ module.exports = function fxGruntConfig (grunt) {
 					Loader: true,
 					_: true,
 					google: true,
-					module: true
+					module: true,
+					CSS3: true
 				}
 			}
 		},
