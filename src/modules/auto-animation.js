@@ -65,7 +65,7 @@
 	};
 
 	var onPageLeave = function (key, data) {
-		if (!data.canRemove) {
+		if (!!data.canRemove) {
 			$.each(animations, function (index, comp) {
 				comp.destroy();
 			});
