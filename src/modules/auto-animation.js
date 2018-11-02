@@ -18,6 +18,8 @@
 	var win = $(window);
 	var scope = $();
 
+	var CAN_PLAY_KEY = 'auto-animation-can-play';
+
 	var sels = {
 		item: '.js-auto-animation'
 	};
@@ -45,7 +47,7 @@
 				var notHigherThanViewport = currentScroll < offset + height;
 				var notLowerThanViewport = currentScroll + winHeight > offset;
 
-				t.data('can-play', notHigherThanViewport && notLowerThanViewport);
+				t.data(CAN_PLAY_KEY, notHigherThanViewport && notLowerThanViewport);
 			}
 		});
 	};
@@ -54,7 +56,7 @@
 		$.each(animations, function (index, comp) {
 			var t = comp.get();
 			if (!!t.length) {
-				(!!t.data('can-play') ? comp.play : comp.pause)();
+				(!!t.data(CAN_PLAY_KEY) ? comp.play : comp.pause)();
 			}
 		});
 	};
