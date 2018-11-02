@@ -64,10 +64,12 @@
 		onPostScroll();
 	};
 
-	var onPageLeave = function () {
-		$.each(animations, function (index, comp) {
-			comp.destroy();
-		});
+	var onPageLeave = function (key, data) {
+		if (!data.canRemove) {
+			$.each(animations, function (index, comp) {
+				comp.destroy();
+			});
+		}
 	};
 
 	var onPageEnter = function (key, data) {
