@@ -30,7 +30,7 @@
 		 * @param {Number} speed The speed of the animation
 		 */
 		var setSpeed = function (speed) {
-			renderer.setSpeed(speed || 1); // 1 is normal speed.
+			renderer.setSpeed(speed);
 		};
 
 		/**
@@ -58,7 +58,7 @@
 		 * @param {Integer} direction the wanted direction of the animation
 		 */
 		var setDirection = function (direction) {
-			renderer.setDirection(direction || 1); // 1 is normal direction.
+			renderer.setDirection(direction);
 		};
 
 		/**
@@ -105,6 +105,7 @@
 		var destroy = function () {
 			renderer.destroy();
 			renderer = null;
+			isPlaying = false;
 		};
 
 		/**
@@ -178,10 +179,7 @@
 		 */
 		var init = function (scope) {
 			animation = scope;
-
-			App.loaded(bm, function () {
-				render();
-			});
+			App.loaded(bm, render);
 		};
 
 		return {

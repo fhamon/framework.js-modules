@@ -79,11 +79,19 @@
 		initAll();
 	};
 
+	var onArticleEnter = function (key, data) {
+		scope = $(data.article);
+		initAll();
+	};
+
 	var actions = function () {
 		return {
 			page: {
 				enter: onPageEnter,
 				leave: onPageLeave
+			},
+			articleChanger: {
+				enter: onArticleEnter
 			},
 			site: {
 				scroll: onScroll,
