@@ -37,7 +37,7 @@
 		 * Go to a specific moment in the animation and pause.
 		 * @param {Number} value The wanted position in the timeline
 		 * @param {Boolean} isFrame if the value is a specific time on the 
-		 * timeline or a specific frame
+		 *                          timeline or a specific frame
 		 */
 		var goToAndStop = function (value, isFrame) {
 			renderer.goToAndStop(value, isFrame);
@@ -47,7 +47,7 @@
 		 * Go to a specific moment in the animation and continue from there.
 		 * @param {Number} value The wanted position in the timeline
 		 * @param {Boolean} isFrame if the value is a specific time on the 
-		 * timeline or a specific frame
+		 *                          timeline or a specific frame
 		 */
 		var goToAndPlay = function (value, isFrame) {
 			renderer.goToAndPlay(value, isFrame);
