@@ -11,7 +11,7 @@
 
 	var update = function () {
 		var currentPath = window.location.pathname;
-		scope.find('[href]').each(function () {
+		scope.find('a[href]').each(function () {
 			var t = $(this);
 			var pathname = '';
 			var matches = [];
