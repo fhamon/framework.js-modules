@@ -2,7 +2,7 @@
  * Watermark
  * @author Deux Huit Huit
  */
-(function ($) {
+(function ($, undefined) {
 
 	'use strict';
 
