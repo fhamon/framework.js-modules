@@ -23,14 +23,14 @@
 			// Partial match
 			App.modules.notify('changeState.update', {
 				item: t,
-				state: 'link-active',
+				state: 'current-link-partial',
 				action: (!!matches.length && pathname !== currentPath) ? 'on' : 'off'
 			});
 
 			// Exact match
 			App.modules.notify('changeState.update', {
 				item: t,
-				state: 'link-active-exact',
+				state: 'current-link',
 				action: pathname === currentPath ? 'on' : 'off'
 			});
 		});
