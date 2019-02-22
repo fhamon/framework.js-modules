@@ -6,8 +6,11 @@
 
 	'use strict';
 
+	var isMultilingual = ($('html').attr('data-all-langs') || '').split(',').length > 1 || true;
 	var scope = $('body');
 	var fakeAnchor = $('<a />');
+
+	var MINIMUM_FOR_PARTIAL = 2;
 
 	var update = function () {
 		var currentPath = window.location.pathname;
@@ -18,7 +21,16 @@
 
 			fakeAnchor.prop('href', t.attr('href'));
 			pathname = fakeAnchor.prop('pathname');
-			matches = _.intersection(pathname.split('/'), currentPath.split('/'));
+
+			$.each(pathname.split('/'), function (index, element) {
+				if (!!element && element === currentPath.split('/')[index]) {
+					matches.push(element);
+				}
+			});
+
+			if (!!isMultilingual && matches.length < MINIMUM_FOR_PARTIAL) {
+				matches = [];
+			}
 
 			// Partial match
 			App.modules.notify('changeState.update', {
