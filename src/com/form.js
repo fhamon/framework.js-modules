@@ -102,6 +102,13 @@
 			}
 
 			isSubmitting = true;
+
+			App.modules.notify('changeState.update', {
+				item: ctn,
+				state: 'submitting',
+				action: 'on'
+			});
+
 			App.callback(options.post.submitting);
 
 			window.Loader.load({
@@ -116,6 +123,13 @@
 				complete: function () {
 					App.callback(options.post.complete);
 					isSubmitting = false;
+
+					App.modules.notify('changeState.update', {
+						item: ctn,
+						state: 'submitting',
+						action: 'on'
+					});
+
 					if (options.disableOnSubmit) {
 						enable(true);
 					}
