@@ -386,6 +386,10 @@
 
 			hint.html(hintMessages);
 
+			if (!result) {
+				return;
+			}
+
 			return {
 				result: result,
 				field: self,
