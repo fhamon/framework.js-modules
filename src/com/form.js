@@ -2,7 +2,6 @@
  * Form
  * @author Deux Huit Huit
  * @requires form-field.js
- * @requires https://cdnjs.cloudflare.com/ajax/libs/validate.js/0.10.0/validate.min.js
  */
 (function ($, win, undefined) {
 
@@ -123,13 +122,11 @@
 				complete: function () {
 					App.callback(options.post.complete);
 					isSubmitting = false;
-
 					App.modules.notify('changeState.update', {
 						item: ctn,
 						state: 'submitting',
-						action: 'on'
+						action: 'off'
 					});
-
 					if (options.disableOnSubmit) {
 						enable(true);
 					}
@@ -168,7 +165,7 @@
 				if (options.focusOnError) {
 					results = _.filter(results);
 					if (!!results.length) {
-						results.get(0).field.focus();
+						results[0].field.focus();
 					}
 				}
 				
@@ -207,7 +204,7 @@
 
 			if (!!options.focusOnFirst) {
 				setTimeout(function () {
-					fields.get(0).focus();
+					fields[0].focus();
 				}, 100);
 			}
 
