@@ -247,7 +247,9 @@
 			var isMaxWidthValid = (!!maxWidth && window.mediaQueryMaxWidth(maxWidth)) || !maxWidth;
 			
 			if (isMinWidthValid && isMaxWidthValid) {
-				processItem(data.item, data.state, data.action, data.callbacks);
+				data.item.each(function () {
+					processItem($(this), data.state, data.action, data.callbacks);
+				});
 			}
 		}
 	};
