@@ -73,9 +73,9 @@
 				}
 			});
 
-			return isValid(_.map(groupFields, function (f) {
+			return _.map(groupFields, function (f) {
 				return f.validate();
-			}));
+			});
 		};
 
 		var enable = function (enabl) {
