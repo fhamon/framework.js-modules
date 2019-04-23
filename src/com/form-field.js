@@ -156,6 +156,7 @@
 					}
 				}
 
+			if (!!file && !!win.FileReader && !!_.contains(file.type.split('/'), 'image')) {
 				var reader = new win.FileReader();
 				reader.onload = function readerLoaded (event) {
 					var r = event.target.result;
@@ -424,9 +425,10 @@
 				input.on(options.previewEvents, preview);
 			}
 			if (!!$.isFunction(options.onKeyup)) {
-				input.on('keyup', function () {
+				input.on('keyup', function (e) {
 					options.onKeyup({
-						field: self
+						field: self,
+						e
 					});
 				});
 			}
@@ -529,6 +531,8 @@
 
 			attachEvents();
 			setValueState();
+
+			ctn.data('form-field-component', self);
 		};
 
 		self = {
@@ -540,6 +544,9 @@
 			reset: reset,
 			preview: preview,
 			scrollTo: scrollTo,
+			updateOptions: function (o) {
+				options = _.assign({}, options, o);
+			},
 			group: function () {
 				return options.group;
 			},
