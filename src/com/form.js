@@ -194,7 +194,7 @@
 				App.log({
 					fx: 'error',
 					me: 'Component Form',
-					args: 'Validate.js not found. Initialization stoped.'
+					args: 'Validate.js not found. Initialization stopped.'
 				});
 				return;
 			}
