@@ -428,7 +428,7 @@
 				input.on('keyup', function (e) {
 					options.onKeyup({
 						field: self,
-						e
+						e: e
 					});
 				});
 			}
