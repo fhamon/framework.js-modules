@@ -156,21 +156,22 @@
 					}
 				}
 
-			if (!!file && !!win.FileReader && !!_.contains(file.type.split('/'), 'image')) {
-				var reader = new win.FileReader();
-				reader.onload = function readerLoaded (event) {
-					var r = event.target.result;
-					if (!!r) {
-						var img = $('<img />')
-							.attr('class', ctn.attr('data-preview-class'))
-							.attr('src', r)
-							.on('error', function () {
-								img.remove();
-							});
-						ctn.append(img);
-					}
-				};
-				reader.readAsDataURL(file);
+				if (!!_.contains(file.type.split('/'), 'image')) {
+					var reader = new win.FileReader();
+					reader.onload = function readerLoaded (event) {
+						var r = event.target.result;
+						if (!!r) {
+							var img = $('<img />')
+								.attr('class', ctn.attr('data-preview-class'))
+								.attr('src', r)
+								.on('error', function () {
+									img.remove();
+								});
+							ctn.append(img);
+						}
+					};
+					reader.readAsDataURL(file);
+				}
 			}
 		};
 
