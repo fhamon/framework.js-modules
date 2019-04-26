@@ -419,30 +419,6 @@
 			if (!!options.previewEvents) {
 				input.on(options.previewEvents, preview);
 			}
-			if (!!$.isFunction(options.onFocus)) {
-				i = input;
-				if (isList) {
-					i = input.find('input[type="radio"],input[type="checkbox"]');
-				} else if (ctn.hasClass('js-form-field-file')) {
-					i = ctn.find('.js-form-field-label-ctn');
-				}
-				i.on('focus', function () {
-					options.onFocus({
-						field: self
-					});
-				});
-			}
-			if (!!$.isFunction(options.onBlur)) {
-				i = input;
-				if (isList) {
-					i = input.find('input[type="radio"],input[type="checkbox"]');
-				}
-				i.on('blur', function () {
-					options.onBlur({
-						field: self
-					});
-				});
-			}
 			if (!!$.isFunction(options.onKeyup)) {
 				input.on('keyup', function () {
 					options.onKeyup({
@@ -473,6 +449,42 @@
 			if (ctn.hasClass('js-input-file')) {
 				input.on('change input', onInputFileChange);
 			}
+
+			i = input;
+
+			if (!!isList) {
+				i = input.find('input[type="radio"],input[type="checkbox"]');
+			} else if (ctn.hasClass('js-form-field-file')) {
+				i = ctn.find('.js-form-field-label-ctn');
+			}
+
+			i.on('focus', function () {
+				App.modules.notify('changeState.update', {
+					item: ctn,
+					state: 'focused',
+					action: 'on'
+				});
+
+				if (!!$.isFunction(options.onFocus)) {
+					options.onFocus({
+						field: self
+					});
+				}
+			});
+
+			i.on('blur', function () {
+				App.modules.notify('changeState.update', {
+					item: ctn,
+					state: 'focused',
+					action: 'off'
+				});
+
+				if (!!$.isFunction(options.onBlur)) {
+					options.onBlur({
+						field: self
+					});
+				}
+			});
 		};
 
 		var fieldOptions = function (ctn) {
