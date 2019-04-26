@@ -1,13 +1,13 @@
 /**
- * @author Deux Huit Huit
- *
  * Form
- *
+ * @author Deux Huit Huit
+ * @requires form-field.js
+ * @requires https://cdnjs.cloudflare.com/ajax/libs/validate.js/0.10.0/validate.min.js
  */
-(function ($, w, doc, moment, undefined) {
+(function ($, win, undefined) {
 
 	'use strict';
-	
+
 	var defaults = {
 		root: 'body',
 		container: '.js-form',
@@ -28,44 +28,43 @@
 		gaCat: 'conversion',
 		gaLabel: 'form'
 	};
-	
+
 	App.components.exports('form', function form (options) {
 		var ctn;
-		var validator;
 		var fields = [];
 		var isSubmitting = false;
 		options = $.extend(true, {}, defaults, options);
-		
+
 		var track = function (action, label, value) {
 			var cat = ctn.attr('data-ga-form-cat') || options.gaCat;
 			label = label || ctn.attr('data-ga-form-label') || options.gaLabel;
 			$.sendEvent(cat, action, label, value);
 		};
-		
+
 		var reset = function () {
-			ctn[0].reset();
+			ctn.get(0).reset();
 			_.each(fields, function (f) {
 				f.reset();
 			});
 		};
-		
+
 		var preview = function () {
 			_.each(fields, function (f) {
 				f.preview();
 			});
 		};
-		
+
 		var validate = function () {
 			return _.map(fields, function (f) {
 				return f.validate();
 			});
 		};
-		
+
 		var isValid = function (results) {
 			results = results || validate();
 			return (!!results.length && !_.some(results)) || !results.length;
 		};
-		
+
 		var validateGroup = function (group) {
 			var groupFields = [];
 
@@ -79,39 +78,32 @@
 				return f.validate();
 			}));
 		};
-		
+
 		var enable = function (enabl) {
 			_.each(fields, function (f) {
 				f.enable(enabl);
 			});
 		};
-		
-		var submitting = function (submitting) {
-			_.each(fields, function (f) {
-				f.submitting(submitting);
-			});
-		};
-		
+
 		var post = function () {
 			var data = {};
 			var processData = !window.FormData;
-			
-			if (isSubmitting) {
+
+			if (!!isSubmitting) {
 				return;
 			}
-			
+	
 			if (!processData) {
-				data = new FormData(ctn[0]);
+				data = new FormData(ctn.get(0));
 			} else {
 				$.each(ctn.serializeArray(), function () {
 					data[this.name] = this.value;
 				});
 			}
-			
+
 			isSubmitting = true;
-			submitting(isSubmitting);
 			App.callback(options.post.submitting);
-			
+
 			window.Loader.load({
 				url: ctn.attr('action'),
 				type: ctn.attr('method') || 'POST',
@@ -124,26 +116,13 @@
 				complete: function () {
 					App.callback(options.post.complete);
 					isSubmitting = false;
-					submitting(isSubmitting);
 					if (options.disableOnSubmit) {
 						enable(true);
 					}
 				}
 			});
 		};
-		
-		var isAllFieldsValid = function () {
-			var isValid = true;
-			_.reduce(fields, function (memo, current) {
-				if (!!memo) {
-					isValid = current.isValid();
-					return isValid;
-				}
-			}, true);
-			
-			return isValid;
-		};
-		
+
 		var onSubmit = function (e) {
 			var results = validate();
 			App.callback(options.onSubmit);
@@ -152,8 +131,9 @@
 				App.callback(options.onValid);
 				var cancel = App.callback(options.onBeforePost, [e]);
 				if (cancel === true) {
-					return w.pd(e);
+					return win.pd(e);
 				}
+
 				if (!!options.post) {
 					post();
 				} else {
@@ -165,87 +145,91 @@
 				}
 				
 				if (!!options.post || !!options.doSubmit) {
-					return w.pd(e);
+					return win.pd(e);
 				}
-			}
-			else {
+			} else {
 				App.callback(options.onError, {
 					results: results
 				});
 				if (options.focusOnError) {
 					results = _.filter(results);
 					if (!!results.length) {
-						results[0].field.focus();
+						results.get(0).field.focus();
 					}
 				}
 				
-				return w.pd(e);
+				return win.pd(e);
 			}
 		};
-		
+
 		var initField = function (i, t) {
 			t = $(t);
 			var field = App.components.create('form-field', options.fieldsOptions);
 
-			var showFirstErrorOnly = t.filter('[data-only-show-first-error]').length === 1;
-
 			field.init({
 				container: t,
-				group: t.closest(options.fieldsGroupSelector),
-				onlyShowFirstError: showFirstErrorOnly
+				group: t.closest(options.fieldsGroupSelector)
 			});
+
 			fields.push(field);
 		};
-		
+
 		var init = function (o) {
 			options = $.extend(true, options, o);
 			options.root = $(options.root);
 			ctn = options.root.find(options.container);
+
+			if (!win.validate) {
+				App.log({
+					fx: 'error',
+					me: 'Component Form',
+					args: 'Validate.js not found. Initialization stoped.'
+				});
+				return;
+			}
+
 			ctn.find(options.fields).each(initField);
 			ctn.submit(onSubmit);
-			
+
 			if (!!options.focusOnFirst) {
 				setTimeout(function () {
-					fields[0].focus();
+					fields.get(0).focus();
 				}, 100);
 			}
-			
+
 			// Default validators message
-			w.validate.validators.presence.options = {
+			win.validate.validators.presence.options = {
 				message: ctn.attr('data-msg-required')
 			};
-			w.validate.validators.email.options = {
+			win.validate.validators.email.options = {
 				message: ctn.attr('data-msg-email-invalid') || ctn.attr('data-msg-invalid')
 			};
-			w.validate.validators.format.options = {
+			win.validate.validators.format.options = {
 				message: ctn.attr('data-msg-invalid')
 			};
-			w.validate.validators.numericality.options = {
+			win.validate.validators.numericality.options = {
 				message: ctn.attr('data-msg-invalid')
 			};
-			w.validate.validators.url.options = {
+			win.validate.validators.url.options = {
 				message: ctn.attr('data-msg-invalid')
-			};
-			w.validate.validators.sameAs.options = {
-				message: ctn.attr('data-msg-confirm-email')
 			};
 			var dateFormat = 'DD-MM-YYYY';
 
 			if (!!window.moment) {
-				w.validate.extend(w.validate.validators.datetime, {
+				win.validate.extend(win.validate.validators.datetime, {
 					// must return a millisecond timestamp
 					// also used to parse earlier and latest options
 					parse: function (value, options) {
 						if (!value) {
 							return NaN;
 						}
-						if (moment.isMoment(value)) {
+						if (win.moment.isMoment(value)) {
 							return +value;
 						}
 						if (/[^\d-\/]/.test(value)) {
 							return NaN;
 						}
-						var date = moment.utc(value, dateFormat);
+						var date = win.moment.utc(value, dateFormat);
 						if (!date.isValid()) {
 							return NaN;
 						}
@@ -254,8 +238,8 @@
 					},
 					// must return a string
 					format: function (value, options) {
-						if (!moment.isMoment(value)) {
-							value = moment(value);
+						if (!win.moment.isMoment(value)) {
+							value = win.moment(value);
 						}
 						return value.format(dateFormat);
 					},
@@ -266,31 +250,27 @@
 				});
 			}
 		};
-		
+
 		return {
 			init: init,
 			enable: enable,
-			validate: validate,
 			reset: reset,
 			preview: preview,
 			post: post,
-			submitting: submitting,
+			validate: validate,
 			validateGroup: validateGroup,
-			container: function () {
+			isValid: isValid,
+			track: track,
+			getContainer: function () {
 				return ctn;
 			},
-			eachFields: function (cb) {
-				return _.each(fields, cb);
+			getFields: function () {
+				return fields;
 			},
 			getOptions: function () {
 				return options;
-			},
-			isValid: isAllFieldsValid,
-			validators: function () {
-				return w.validate.validators;
-			},
-			track: track
+			}
 		};
 	});
-	
-})(jQuery, window, document, window.moment);
+
+})(jQuery, window);
