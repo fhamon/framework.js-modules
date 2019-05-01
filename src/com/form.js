@@ -45,6 +45,11 @@
 			_.each(fields, function (f) {
 				f.reset();
 			});
+			App.modules.notify('changeState.update', {
+				item: ctn,
+				state: 'submitting',
+				action: 'off'
+			});
 		};
 
 		var preview = function () {
@@ -102,12 +107,6 @@
 
 			isSubmitting = true;
 
-			App.modules.notify('changeState.update', {
-				item: ctn,
-				state: 'submitting',
-				action: 'on'
-			});
-
 			App.callback(options.post.submitting);
 
 			window.Loader.load({
@@ -137,6 +136,12 @@
 		var onSubmit = function (e) {
 			var results = validate();
 			App.callback(options.onSubmit);
+
+			App.modules.notify('changeState.update', {
+				item: ctn,
+				state: 'submitting',
+				action: 'on'
+			});
 			
 			if (isValid(results)) {
 				App.callback(options.onValid);
