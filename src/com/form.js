@@ -3,7 +3,7 @@
  * @author Deux Huit Huit
  * @requires form-field.js
  */
-(function ($, win, undefined) {
+(function ($, global, undefined) {
 
 	'use strict';
 
@@ -142,7 +142,7 @@
 				App.callback(options.onValid);
 				var cancel = App.callback(options.onBeforePost, [e]);
 				if (cancel === true) {
-					return win.pd(e);
+					return global.pd(e);
 				}
 
 				if (!!options.post) {
@@ -156,7 +156,7 @@
 				}
 				
 				if (!!options.post || !!options.doSubmit) {
-					return win.pd(e);
+					return global.pd(e);
 				}
 			} else {
 				App.callback(options.onError, {
@@ -169,7 +169,7 @@
 					}
 				}
 				
-				return win.pd(e);
+				return global.pd(e);
 			}
 		};
 
@@ -190,7 +190,7 @@
 			options.root = $(options.root);
 			ctn = options.root.find(options.container);
 
-			if (!win.validate) {
+			if (!global.validate) {
 				App.log({
 					fx: 'error',
 					me: 'Component Form',
@@ -209,38 +209,38 @@
 			}
 
 			// Default validators message
-			win.validate.validators.presence.options = {
+			global.validate.validators.presence.options = {
 				message: ctn.attr('data-msg-required')
 			};
-			win.validate.validators.email.options = {
+			global.validate.validators.email.options = {
 				message: ctn.attr('data-msg-email-invalid') || ctn.attr('data-msg-invalid')
 			};
-			win.validate.validators.format.options = {
+			global.validate.validators.format.options = {
 				message: ctn.attr('data-msg-invalid')
 			};
-			win.validate.validators.numericality.options = {
+			global.validate.validators.numericality.options = {
 				message: ctn.attr('data-msg-invalid')
 			};
-			win.validate.validators.url.options = {
+			global.validate.validators.url.options = {
 				message: ctn.attr('data-msg-invalid')
 			};
 			var dateFormat = 'DD-MM-YYYY';
 
 			if (!!window.moment) {
-				win.validate.extend(win.validate.validators.datetime, {
+				global.validate.extend(global.validate.validators.datetime, {
 					// must return a millisecond timestamp
 					// also used to parse earlier and latest options
 					parse: function (value, options) {
 						if (!value) {
 							return NaN;
 						}
-						if (win.moment.isMoment(value)) {
+						if (global.moment.isMoment(value)) {
 							return +value;
 						}
 						if (/[^\d-\/]/.test(value)) {
 							return NaN;
 						}
-						var date = win.moment.utc(value, dateFormat);
+						var date = global.moment.utc(value, dateFormat);
 						if (!date.isValid()) {
 							return NaN;
 						}
@@ -249,8 +249,8 @@
 					},
 					// must return a string
 					format: function (value, options) {
-						if (!win.moment.isMoment(value)) {
-							value = win.moment(value);
+						if (!global.moment.isMoment(value)) {
+							value = global.moment(value);
 						}
 						return value.format(dateFormat);
 					},

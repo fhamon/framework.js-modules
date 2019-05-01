@@ -3,7 +3,7 @@
  * @author Deux Huit Huit
  * @requires https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/moment.min.js
  */
-(function ($, win, undefined) {
+(function ($, global, undefined) {
 
 	'use strict';
 
@@ -147,7 +147,7 @@
 		var previewFile = function (ctn, file) {
 			ctn.empty();
 			//Change label caption
-			if (!!file && !!win.FileReader) {
+			if (!!file && !!global.FileReader) {
 				if (options.changeLabelTextToFilename) {
 					if (!!file && file.name) {
 						label.text(file.name);
@@ -157,7 +157,7 @@
 				}
 
 				if (!!_.contains(file.type.split('/'), 'image')) {
-					var reader = new win.FileReader();
+					var reader = new global.FileReader();
 					reader.onload = function readerLoaded (event) {
 						var r = event.target.result;
 						if (!!r) {
@@ -329,7 +329,7 @@
 					}
 				});
 
-				var validationResult = win.validate.single(value, constraints, rulesOptions);
+				var validationResult = global.validate.single(value, constraints, rulesOptions);
 
 				//Validate file size for input file type
 				if (ctn.hasClass('js-input-file')) {
@@ -556,7 +556,7 @@
 				return !!~rules.indexOf('required');
 			},
 			isEmpty: function () {
-				return win.validate.isEmpty(value());
+				return global.validate.isEmpty(value());
 			},
 			getCtn: function () {
 				return ctn;
