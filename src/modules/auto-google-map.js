@@ -13,7 +13,7 @@
 		ctn: '.js-auto-google-map-ctn',
 		map: '.js-auto-google-map',
 		marker: '.js-auto-google-map-marker',
-		style: '.js-auto-google-map-style'
+		styles: '.js-auto-google-map-style'
 	};
 
 	var ready = false;
@@ -79,10 +79,23 @@
 			var lat = t.attr('data-lat');
 			var lng = t.attr('data-lng');
 			var markers = t.find(sels.marker);
+			var styles = t.find(sels.styles).html();
 
 			if ((!lat || !lng) && !!markers.length) {
 				lat = markers.first().attr('data-lat');
 				lng = markers.first().attr('data-lng');
+			}
+
+			if (!!styles) {
+				try {
+					styles = JSON.parse(styles);
+				} catch (error) {
+					App.log({
+						me: 'Auto Google Maps',
+						args: error,
+						fx: 'error'
+					});
+				}
 			}
 
 			if (!!lat && !!lng) {
@@ -92,7 +105,8 @@
 						latitude: lat,
 						longitude: lng
 					},
-					styles: t.find(sels.style).html() || undefined,
+					selectorCtn: sels.map,
+					styles: styles || undefined,
 					zoomControl: true,
 					panControl: true,
 					streetViewControl: false,
@@ -116,7 +130,7 @@
 
 				// Store comp
 				t.data('googleMapComp', comp);
-				comp.init(t, sels.map);
+				comp.init(t);
 			}
 
 		});
