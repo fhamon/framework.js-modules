@@ -54,7 +54,7 @@
 		};
 
 		if (!iconSrc) {
-			delete config.iconImage;
+			config.iconImage = undefined;
 		}
 
 		var marker = mapComponent.addMarker(config);
