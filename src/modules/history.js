@@ -16,7 +16,16 @@
 
 	var update = function () {
 		urls.push(window.location.href);
-		scope.find(sels.input).val(urls.join('\n'));
+		scope.find(sels.input).each(function () {
+			var t = $(this);
+			var value = urls.join('\n');
+
+			if (t.attr('data-history-unique') === 'true') {
+				value = _.uniq(urls).join('\n');
+			}
+
+			t.val(value);
+		});
 	};
 
 	var onPageEnter = function (key, data) {
