@@ -6,6 +6,8 @@
 
 	'use strict';
 
+	var STORAGE_KEY = 'history';
+
 	var scope = $('#site');
 
 	var sels = {
@@ -13,6 +15,12 @@
 	};
 
 	var urls = [];
+
+	try {
+		urls = JSON.parse(App.storage.local.get(STORAGE_KEY) || []);
+	} catch (error) {
+		App.log(error);
+	}
 
 	var update = function () {
 		urls.push(window.location.href);
@@ -26,6 +34,7 @@
 
 			t.val(value);
 		});
+		App.storage.local.set(STORAGE_KEY, JSON.stringify(urls));
 	};
 
 	var onPageEnter = function (key, data) {
