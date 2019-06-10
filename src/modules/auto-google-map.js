@@ -47,7 +47,7 @@
 				},
 				p2: {
 					x: iconWidth / 2,
-					y: iconHeight
+					y: iconHeight / 2
 				}
 			},
 			zIndex: 50
