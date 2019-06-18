@@ -72,6 +72,11 @@
 			var t = $(this);
 
 			if (!!t.find(sels.map).data('googleMapComp')) {
+				App.log({
+					fx: 'warn',
+					me: 'AutoGoogleMaps',
+					args: 'Component already inited for this map; skipping.'
+				});
 				return;
 			}
 
@@ -131,6 +136,12 @@
 				// Store comp
 				t.data('googleMapComp', comp);
 				comp.init(t);
+			} else {
+				App.log({
+					fx: 'error',
+					me: 'AutoGoogleMaps',
+					args: 'No latitude and/or longitude passed to the map'
+				});
 			}
 
 		});
