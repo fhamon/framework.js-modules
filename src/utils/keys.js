@@ -7,7 +7,8 @@
 	'use strict';
 
 	var keys = {};
-
+	
+	/* jshint ignore:start */
 	keys.code = {
 		'?': 0,
 		backspace: 8,
@@ -117,13 +118,14 @@
 		close_braket: 221,
 		single_quote: 222
 	};
+	/* jshint ignore:end */
 
 	keys.fromCode = function (code) {
 		var key = '?';
 		if (!code) {
 			return key;
 		}
-		$.each(App.device.keys.code, function (index, value) {
+		$.each(keys.code, function (index, value) {
 			if (code === value) {
 				key = index;
 				return false;
@@ -136,12 +138,13 @@
 
 	// Chars
 	keys.isChar = function (c) {
-		return c === App.device.keys.code.space_bar ||
-			(c > App.device.keys.code['0'] && c <= App.device.keys.code.z);
+		return c === keys.code.space_bar || (c > keys.code['0'] && c <= keys.code.z);
 	};
 
 	window.App = $.extend(true, window.App, {
-		keys: keys
+		device: {
+			keys: keys
+		}
 	});
 
 })(jQuery);
