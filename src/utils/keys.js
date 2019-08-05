@@ -8,8 +8,8 @@
 
 	var keys = {};
 	
-	/* jshint ignore:start */
 	keys.code = {
+		/* jshint ignore:start */
 		'?': 0,
 		backspace: 8,
 		tab: 9,
@@ -117,8 +117,8 @@
 		'\\': 220,
 		close_braket: 221,
 		single_quote: 222
+		/* jshint ignore:end */
 	};
-	/* jshint ignore:end */
 
 	keys.fromCode = function (code) {
 		var key = '?';
