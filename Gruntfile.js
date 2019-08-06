@@ -129,7 +129,7 @@ module.exports = function fxGruntConfig (grunt) {
 			generic: {
 				src: SRC_FILES,
 				exclude: [
-					'./utils/keys.js'
+					'./src/utils/keys.js'
 				],
 				options: {
 					//jsLintXML: 'report.xml', // create XML JSLint-like report
