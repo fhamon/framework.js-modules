@@ -7,7 +7,7 @@
  * @uses jQuery
  * @uses underscore.js
  *
- * REQUIRE: https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.0/lottie.min.js
+ * REQUIRE: https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.7/lottie.min.js
  * DOCS: https://github.com/airbnb/lottie-web
  */
 (function ($) {
@@ -41,6 +41,7 @@
 		 */
 		var goToAndStop = function (value, isFrame) {
 			renderer.goToAndStop(value, isFrame);
+			isPlaying = false;
 		};
 
 		/**
@@ -51,6 +52,7 @@
 		 */
 		var goToAndPlay = function (value, isFrame) {
 			renderer.goToAndPlay(value, isFrame);
+			isPlaying = true;
 		};
 
 		/**
@@ -68,6 +70,7 @@
 		 */
 		var playSegments = function (segments, force) {
 			renderer.playSegments(segments, force);
+			isPlaying = force;
 		};
 
 		/**
@@ -75,20 +78,16 @@
 		 * Please refer to the documentation if this method is not clear enough :)
 		 */
 		var play = function () {
-			if (!isPlaying) {
-				renderer.play();
-				isPlaying = true;
-			}
+			renderer.play();
+			isPlaying = true;
 		};
 
 		/**
 		 * Pause the animation
 		 */
 		var pause = function () {
-			if (!!isPlaying) {
-				renderer.pause();
-				isPlaying = false;
-			}
+			renderer.pause();
+			isPlaying = false;
 		};
 
 		/**
@@ -103,7 +102,11 @@
 		 * Destroy the world, and yeah, the animation.
 		 */
 		var destroy = function () {
+			if (!animation || !renderer) {
+				return;
+			}
 			renderer.destroy();
+			animation.empty();
 			renderer = null;
 			isPlaying = false;
 		};
@@ -134,7 +137,7 @@
 			}, {});
 			return _.assign({
 				wrapper: animation.get(0)
-			}, defaults, opts);
+			}, defaults, options, opts);
 		};
 
 		/**
@@ -148,7 +151,7 @@
 		/**
 		 * Just to be sure the library is loaded before making any calls.
 		 */
-		var bm = function () {
+		var airbnblottie = function () {
 			return !!window.lottie;
 		};
 
@@ -174,12 +177,24 @@
 		};
 
 		/**
+		 * Get the renderer instence used for this specific animation
+		 * @returns renderer instence
+		 */
+		var getRenderer = function () {
+			return renderer;
+		};
+
+		/**
 		 * Set the ctn of the animation and call render if everything is ready
 		 * @param {jQuery Element} scope the container of the animation
+		 * @param {function} cb callback when the render is done
 		 */
-		var init = function (scope) {
+		var init = function (scope, cb) {
 			animation = scope;
-			App.loaded(bm, render);
+			App.loaded(airbnblottie, function () {
+				render();
+				App.callback(cb);
+			});
 		};
 
 		return {
@@ -195,7 +210,8 @@
 			setDirection: setDirection,
 			playSegments: playSegments,
 			destroy: destroy,
-			get: get
+			get: get,
+			renderer: getRenderer
 		};
 	});
 
