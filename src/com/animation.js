@@ -211,7 +211,7 @@
 			playSegments: playSegments,
 			destroy: destroy,
 			get: get,
-			renderer: getRenderer
+			getRenderer: getRenderer
 		};
 	});
 
