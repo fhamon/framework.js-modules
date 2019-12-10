@@ -24,32 +24,39 @@
 
 	'use strict';
 
-	var computeOptions = function (key, options) {
-		var opts = {};
+	var computeRegex = function (key) {
+		var regex = null;
 
 		try {
-			var dataAttrPattern = new RegExp('^' + options.key);
-
-			opts = _.reduce(options.element.data(), function (memo, value, key) {
-				if (dataAttrPattern.test(key)) {
-					if (_.isObject(value)) {
-						return memo;
-					}
-					var parsedKey = key.replace(dataAttrPattern, '');
-					var validKey = '';
-					if (!!parsedKey && !!parsedKey[0]) {
-						validKey = parsedKey[0].toLowerCase();
-						if (parsedKey.length >= 2) {
-							validKey += parsedKey.substr(1);
-						}
-						memo[validKey] = value;
-					}
-				}
-				return memo;
-			}, {});
+			regex = new RegExp('^' + key);
 		} catch (error) {
 			App.log(error);
 		}
+
+		return regex;
+	};
+
+	var computeOptions = function (key, options) {
+		var opts = {};
+		var dataAttrPattern = computeRegex(options.key);
+
+		opts = _.reduce(options.element.data(), function (memo, value, key) {
+			if (dataAttrPattern.test(key)) {
+				if (_.isObject(value)) {
+					return memo;
+				}
+				var parsedKey = key.replace(dataAttrPattern, '');
+				var validKey = '';
+				if (!!parsedKey && !!parsedKey[0]) {
+					validKey = parsedKey[0].toLowerCase();
+					if (parsedKey.length >= 2) {
+						validKey += parsedKey.substr(1);
+					}
+					memo[validKey] = value;
+				}
+			}
+			return memo;
+		}, {});
 
 		return opts;
 	};
