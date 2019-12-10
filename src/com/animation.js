@@ -189,7 +189,8 @@
 		 * @param {jQuery Element} scope the container of the animation
 		 * @param {function} cb callback when the render is done
 		 */
-		var init = function (scope, cb) {
+		var init = function (scope, opts, cb) {
+			options = _.assign({}, defaults, options, opts);
 			animation = scope;
 			App.loaded(airbnblottie, function () {
 				render();
