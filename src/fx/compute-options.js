@@ -26,25 +26,30 @@
 
 	var computeOptions = function (key, options) {
 		var opts = {};
-		var dataAttrPattern = new RegExp('^' + options.key);
 
-		opts = _.reduce(options.element.data(), function (memo, value, key) {
-			if (dataAttrPattern.test(key)) {
-				if (_.isObject(value)) {
-					return memo;
-				}
-				var parsedKey = key.replace(dataAttrPattern, '');
-				var validKey = '';
-				if (!!parsedKey && !!parsedKey[0]) {
-					validKey = parsedKey[0].toLowerCase();
-					if (parsedKey.length >= 2) {
-						validKey += parsedKey.substr(1);
+		try {
+			var dataAttrPattern = new RegExp('^' + options.key);
+
+			opts = _.reduce(options.element.data(), function (memo, value, key) {
+				if (dataAttrPattern.test(key)) {
+					if (_.isObject(value)) {
+						return memo;
 					}
-					memo[validKey] = value;
+					var parsedKey = key.replace(dataAttrPattern, '');
+					var validKey = '';
+					if (!!parsedKey && !!parsedKey[0]) {
+						validKey = parsedKey[0].toLowerCase();
+						if (parsedKey.length >= 2) {
+							validKey += parsedKey.substr(1);
+						}
+						memo[validKey] = value;
+					}
 				}
-			}
-			return memo;
-		}, {});
+				return memo;
+			}, {});
+		} catch (error) {
+			App.log(error);
+		}
 
 		return opts;
 	};
