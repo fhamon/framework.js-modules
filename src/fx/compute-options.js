@@ -40,6 +40,10 @@
 		var opts = {};
 		var dataAttrPattern = computeRegex(options.key);
 
+		if (!dataAttrPattern) {
+			return opts;
+		}
+
 		opts = _.reduce(options.element.data(), function (memo, value, key) {
 			if (dataAttrPattern.test(key)) {
 				if (_.isObject(value)) {
