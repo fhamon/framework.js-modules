@@ -22,7 +22,8 @@
 
 		var defaults = {
 			renderer: 'svg',
-			loop: false
+			loop: false,
+			onLoaded: $.noop
 		};
 
 		/**
@@ -187,14 +188,13 @@
 		/**
 		 * Set the ctn of the animation and call render if everything is ready
 		 * @param {jQuery Element} scope the container of the animation
-		 * @param {function} cb callback when the render is done
 		 */
-		var init = function (scope, opts, cb) {
+		var init = function (scope, opts) {
 			options = _.assign({}, defaults, options, opts);
 			animation = scope;
 			App.loaded(airbnblottie, function () {
 				render();
-				App.callback(cb);
+				App.callback(options.onLoaded);
 			});
 		};
 
