@@ -29,10 +29,6 @@
 		var iconWidth = parseInt(element.attr('data-icon-width'), 10) || DEFAULT_MARKER_WIDTH;
 		var iconHeight = parseInt(element.attr('data-icon-height'), 10) || DEFAULT_MARKER_HEIGHT;
 
-		if (!!App.device.internetexplorer) {
-			iconSrc = null;
-		}
-
 		var config = {
 			id: element.attr('data-poi-id'),
 			LatLng: new window.google.maps.LatLng(lat, lng),
