@@ -12,9 +12,9 @@
  *      - data-{state}-state-follower : List of selector separated by ','
  *      - data-{state}-state-follower-common-ancestor (if not present: this will be used)
  *
- *      - data-{state}-state-notify-on: custom list of notification separated by ' ' (space)
+ *      - data-{state}-state-notify-on: custom list of notification separated by ' ' (space) or ','
  *             called when switching state to on. Data passed : {item:this}
- *      - data-{state}-state-notify-off: custom list of notification separated by ' ' (space)
+ *      - data-{state}-state-notify-off: custom list of notification separated by ' ' (space) or ','
  *             called when switching state to off. Data passed : {item:this}
  *
  *  NOTIFY IN :
