@@ -40,6 +40,10 @@
 			fakeAnchor.prop('href', t.attr('href'));
 			pathname = fakeAnchor.prop('pathname');
 
+			if (!!App.device.internetexplorer) {
+				pathname = '/' + pathname;
+			}
+
 			$.each(pathname.split('/'), function (index, element) {
 				if (!!element && element === currentPath.split('/')[index]) {
 					matches.push(element);
