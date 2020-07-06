@@ -40,7 +40,8 @@
 			fakeAnchor.prop('href', t.attr('href'));
 			pathname = fakeAnchor.prop('pathname');
 
-			if (!!App.device.internetexplorer) {
+			// IE respects the spec, for once...
+			if (pathname.charAt(0) !== '/') {
 				pathname = '/' + pathname;
 			}
 
