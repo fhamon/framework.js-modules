@@ -41,7 +41,7 @@
 					return;
 				}
 
-				window.history.pushState({}, event.target.textContent, event.target.getAttribute('href'));
+				window.history.pushState({}, event.target.textContent, event.target.href);
 
 				return window.pd(event);
 			}
